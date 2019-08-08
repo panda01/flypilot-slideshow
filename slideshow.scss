@@ -1,0 +1,149 @@
+
+$slideshowFrameHeight: 760px;
+$slideshowFrameWidth: 80vw;
+$arrows_width: 60px;
+
+.fly_slideshow {
+	.placeholder_image { display: none; }
+}
+.slideshows {
+	height: $slideshowFrameHeight;
+	display: flex;
+	overflow: hidden;
+	position: relative;
+	.click_area {
+		position: absolute;
+		height: 100%;
+		z-index: 3;
+		cursor: pointer;
+		width: calc((100vw - (#{$slideshowFrameWidth} + #{$arrows_width})) * 0.5);
+		&.left_arrow {
+			left: 0;
+		}
+		&.right_arrow {
+			right: 0;
+		}
+	}
+
+	.fake_wrapper,
+	.arrows {
+		$arrow_padding: 20px;
+		height: 100%;
+		width: $arrows_width;
+		display: flex;
+		position: absolute;
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: center;
+		.right_arrow,
+		.left_arrow {
+			background-image: url('left_arrow.svg');
+			background-repeat: no-repeat;
+			background-position: bottom center;
+			height: 35px;
+			cursor: pointer;
+			padding-top: $arrow_padding;
+			margin-bottom: 10px;
+		}
+		.right_arrow {
+			transform: rotate(180deg);
+		}
+	}
+	.frame_wrapper {
+		position: relative;
+		width: 100vw;
+		z-index: 1;
+		.fake {
+			background-image: none;
+		}
+	}
+	.overlay {
+		z-index: 2;
+	}
+	&.forward {
+		.overlay {
+			display: none;
+		}
+		.frame_wrapper {
+			transition: all 500ms ease;
+			transform: translateX(calc(#{$slideshowFrameWidth * -1} + #{$arrows_width * -1}));
+		}
+	}
+	&.backward {
+		.overlay {
+			display: none;
+		}
+		.frame_wrapper {
+			transition: all 500ms ease;
+			transform: translateX(calc(#{$slideshowFrameWidth} + #{$arrows_width}));
+		}
+	}
+
+	.prev,
+	.next,
+	.buffer,
+	.frame {
+		position: absolute;
+		top: 0;
+		height: $slideshowFrameHeight;
+		width: $slideshowFrameWidth;
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			border: 0 none transparent;
+
+		}
+	}
+	&.left_aligned {
+		.fake_wrapper,
+		.arrows {
+			left: $slideshowFrameWidth;
+		}
+
+		.prev,
+		.next,
+		.buffer,
+		.frame {
+			left: 0;
+		}
+		.frame_wrapper .fake_wrapper {
+			left: $slideshowFrameWidth;
+			.fake {
+				height: 35px;
+			}
+
+		}
+		.buffer {
+			left: calc(#{$slideshowFrameWidth} + #{$arrows_width});
+		}
+		.next {
+			left: calc(2 * (#{$slideshowFrameWidth} + #{$arrows_width}));
+		}
+		.prev {
+			left: calc(#{$slideshowFrameWidth * -1} + #{$arrows_width * -1});
+		}
+	}
+	&.right_aligned {
+		.fake_wrapper,
+		.arrows {
+			right: $slideshowFrameWidth;
+		}
+
+		.prev,
+		.next,
+		.buffer,
+		.frame {
+			right: 0;
+		}
+		.buffer {
+			right: calc(#{$slideshowFrameWidth} + #{$arrows_width});
+		}
+		.next {
+			right: calc(2 * (#{$slideshowFrameWidth} + #{$arrows_width}));
+		}
+		.prev {
+			right: calc(#{$slideshowFrameWidth * -1} + #{$arrows_width * -1});
+		}
+	}
+}
