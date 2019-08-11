@@ -64,7 +64,8 @@ function add_slideshow_shortcode($attributes) {
 				'position' => get_sub_field('image_position'),
 				'caption' => get_sub_field('caption')
 			);
-			$img_markup .= '<img src="' . $slide_array['image']['url'] . '" class="placeholder_image" />';
+			$img_styles = 'style="object-position: ' . str_replace('_', ' ', $slide_array['position']) . '"';
+			$img_markup .= '<img src="' . $slide_array['image']['url'] . '" class="placeholder_image" ' . $img_styles . ' />';
 			array_push($ret_array, $slide_array);
 		}
 	}

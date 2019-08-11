@@ -158,11 +158,13 @@
 
 	}
 	function copyImageAttrs(to, from) {
-		var attrsToCopy = ['src', 'srcset', 'sizes', 'alt'];
+		var attrsToCopy = ['src', 'srcset', 'sizes', 'alt', 'style'];
+		var $to = $(to);
+		var $from = $(from);
 		attrsToCopy.forEach(function(attr) {
 			var isEmpty = from[attr].length === 0;
 			if(!isEmpty) {
-				to[attr] = from[attr];
+				$to.attr(attr, $from.attr(attr));
 			}
 		});
 	}
