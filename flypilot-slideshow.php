@@ -74,10 +74,15 @@ function add_slideshow_shortcode($attributes) {
 					$img_style = ' style="object-position: ' . str_replace('_', ' ', get_sub_field('image_position')) . '"';
 				}
 
-				$img_markup .= '<img src="' . $slide_array['image']['url'] . '"' . $img_classes . $img_style . ' />';
+				$curr_img_markup = '<img src="' . $slide_array['image']['url'] . '"' . $img_classes . $img_style . ' />';
 			} else {
-				$img_markup .= '<img src="' . $slide_array['image']['url'] . '"' . $img_attrs . ' />';
+				$curr_img_markup = '<img src="' . $slide_array['image']['url'] . '"' . $img_attrs . ' />';
 			}
+			$img_id = $slide_array['image']['ID'];
+			$image_metadata = wp_get_attachment_metadata($img_id);
+			$responsive_img_markup = wp_image_add_srcset_and_sizes($curr_img_markup, $image_metadata, $image_id);
+
+			$img_markup .= $responsive_img_markup;
 			array_push($ret_array, $slide_array);
 		}
 	}
