@@ -64,8 +64,20 @@ function add_slideshow_shortcode($attributes) {
 				'position' => get_sub_field('image_position'),
 				'caption' => get_sub_field('caption')
 			);
-			$img_styles = 'style="object-position: ' . str_replace('_', ' ', $slide_array['position']) . '"';
-			$img_markup .= '<img src="' . $slide_array['image']['url'] . '" class="placeholder_image" ' . $img_styles . ' />';
+			$img_classes = ' class="placeholder_image"';
+			$img_attrs = $img_classes . ' style="object-position: ' . str_replace('_', ' ', $slide_array['position']) . '"';
+			if( function_exists('flypilot_print_image_markup') ) {
+				$has_specific_position = !empty($slide_array['position']);
+				if($has_specific_position) {
+					$img_style = ' style="object-position: ' . str_replace('_', ' ', $slide_array['position']) . '"';
+				} else {
+					$img_style = ' style="object-position: ' . str_replace('_', ' ', get_sub_field('image_position')) . '"';
+				}
+
+				$img_markup .= '<img src="' . $slide_array['image']['url'] . '"' . $img_classes . $img_style . ' />';
+			} else {
+				$img_markup .= '<img src="' . $slide_array['image']['url'] . '"' . $img_attrs . ' />';
+			}
 			array_push($ret_array, $slide_array);
 		}
 	}
