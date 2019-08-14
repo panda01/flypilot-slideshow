@@ -61,6 +61,41 @@
 					isAnimating = false;
 				});
 			});
+			var lastMouseXPos = false;
+			var lastTimeStamp = false;
+			var DRAG_TIME_THRESHOLD = 100;
+			$slideshowMarkup.on('mousedown', function(evt) {
+				var clickedLeftArrow = $(evt.target).hasClass('left_arrow');
+				var clickedRightArrow = $(evt.target).hasClass('right_arrow');
+				if(clickedRightArrow || clickedLeftArrow) {
+					console.log('clicked inside arrows');
+					return;
+				}
+				lastMouseXPos = evt.pageX;
+				lastTimeStamp = evt.timeStamp;
+				evt.preventDefault();
+			});
+			$slideshowMarkup.on('mousemove', function(evt) {
+				var alreadyRan = lastMouseXPos === false;
+				if(alreadyRan) {
+					return;
+				}
+				var timeDiff = evt.timeStamp - lastTimeStamp;
+				var timeInThreshold = timeDiff < DRAG_TIME_THRESHOLD;
+				if(timeInThreshold) {
+					return;
+				}
+
+				var currMousePos = evt.pageX;
+				var isDragLeft = currMousePos < lastMouseXPos;
+				lastMouseXPos = false;
+
+				if(isDragLeft) {
+					$slideshowMarkup.find('.arrows .left_arrow').click();
+				} else {
+					$slideshowMarkup.find('.arrows .right_arrow').click();
+				}
+			});
 			setOverlayImage($slideshowMarkup[0], 0);
 			showProperImageForSlideshow($slideshowMarkup[0]);
 			$(el).append($slideshowMarkup);
